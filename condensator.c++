@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath> // For std::exp
 #include <vector>
-#include <ncurses.h>
 
 #define EPSILON_0 8.854187817e-12
 using namespace std;
@@ -83,21 +82,20 @@ using namespace std;
             }
         }
     }
-    int main(int argc, char const *argv[]) {
 
-        cout << "Wilkommen zum Ultimativen TEB-Lenzer programm für ET!\n" << endl;
-        cout << "Die Aktuelle funktionsliste ist:\n" << endl;
-        cout << "1. Uc, Braucht U, T und Tau,\n" << endl;
-        cout << "2. Ic, Braucht T und Tau,\n" << endl;
-        cout << "3. get_Tau, Braucht R und c\n" << endl;
-        cout << "4. get_Time, Braucht Tau,\n" << endl;
-        cout << "5. get Capacity, braucht A Er und l\n" << endl;
+int main(int argc, char const *argv[]) {
+    cout << "Wilkommen zum Ultimativen TEB-Lenzer programm für ET!\n" << endl;
+    cout << "Die Aktuelle funktionsliste ist:\n" << endl;
+    cout << "1. Uc, Braucht U, T und Tau,\n" << endl;
+    cout << "2. Ic, Braucht T und Tau,\n" << endl;
+    cout << "3. get_Tau, Braucht R und c\n" << endl;
+    cout << "4. get_Time, Braucht Tau,\n" << endl;
+    cout << "5. get Capacity, braucht A Er und l\n" << endl;
 
-        string option;
-        
-        int cleaned_option = 0;
+    string option;
+    int cleaned_option = 0;
 
-        while (true) {
+    while (true) {
         cout << "Bitte geben Sie eine Zahl ein: ";
         cin >> option;
 
@@ -108,53 +106,56 @@ using namespace std;
             cout << "Das ist keine Nummer, du Hund!" << endl;
         }
     }
-        
-        // Get the size of the materials array
-        int numMaterials = sizeof(materials) / sizeof(materials[0]);
 
-        // Variable to store all material names
-        string materialNames;
+    // Get material names
+    int numMaterials = sizeof(materials) / sizeof(materials[0]);
+    string materialNames;
+    for (int i = 0; i < numMaterials; i++) {
+        materialNames += materials[i].name + "\n";
+    }
 
-        // Loop through the array and concatenate the names
-        for (int i = 0; i < numMaterials; i++) {
-            materialNames += materials[i].name + "\n";
-        }
-
-        if(cleaned_option)
-
-        switch (cleaned_option)
-        {
-        case 1: // Uc
+    switch (cleaned_option) {
+        case 1: {
             float U = validate_user_retardation("Enter U: ");
             float T = validate_user_retardation("Enter t: ");
             float Tau = validate_user_retardation("Enter Tau: ");
-            cout << Uc(U,T,Tau) << endl;
+            cout << Uc(U, T, Tau) << endl;
             break;
-        case 2: // Ic
+        }
+        case 2: {
             float T = validate_user_retardation("Enter T: ");
             float Tau = validate_user_retardation("Enter Tau: ");
-            cout << ic(T,Tau) << endl;
+            cout << ic(T, Tau) << endl;
             break;
-        case 3: // get_Tau
+        }
+        case 3: {
             float R = validate_user_retardation("Enter R: ");
             float c = validate_user_retardation("Enter c: ");
-            cout << get_Tau(R,c) << endl;
+            cout << get_Tau(R, c) << endl;
             break;
-        case 4: // get_Time
+        }
+        case 4: {
             float Tau = validate_user_retardation("Enter Tau: ");
             cout << get_Time(Tau) << endl;
             break;
-        case 5: //get_Capacity
+        }
+        case 5: {
+            string materialPrompt = "Enter Er the Material: \nAll Materials:\n" + materialNames;
             float A = validate_user_retardation("Enter A: ");
-            float Er = validate_user_retardation("Enter Er the Material: \n All Materials:\n" + materialNames);
+            float Er = validate_user_retardation(materialPrompt);
             float l = validate_user_retardation("Enter l: ");
             int er = static_cast<int>(Er);
-            cout << get_Capacity(A,materials[er-1].epsilon_r_max,l);
+            if (er < 1 || er > numMaterials) {
+                cout << "Invalid material selection!" << endl;
+                break;
+            }
+            cout << get_Capacity(A, materials[er - 1].epsilon_r_max, l);
             break;
+        }
         default:
             cout << "Schreib ne nummer du Profi!!" << endl;
             break;
-        }
+    }
 
-        return 0;
+    return 0;
 }
