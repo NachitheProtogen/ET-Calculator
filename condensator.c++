@@ -67,51 +67,94 @@ using namespace std;
         return calc + logic;
     }
 
-    int showMenue(string options_array[]) {
-    int index = 0;
-    const int options = sizeof(options_array)/ sizeof(options_array[0]);
+    float validate_user_retardation(string prompt){
+        string input;
+        float number;
 
-    initscr();               // Initialize ncurses
-    noecho();                // Disable echoing of characters
-    cbreak();                // Disable line buffering
-    keypad(stdscr, TRUE);    // Enable arrow keys and special keys
+        while (true) {
+            cout << prompt;
+            cin >> input;
 
-    while (true) {
-        clear();
-
-        for (int i = 0; i < options; i++)
-        {
-            if (i == index) {
-                attron(A_REVERSE);
+            try {
+                number = stof(input);
+                return number;        
+            } catch (exception &err) {
+                cout << "Das ist keine Nummer, du Hund!" << endl;
             }
-
-            switch (i)
-            {
-            case 0: printw("random grid");break;
-            case 1: printw("manual grid");break;
-            }
-
-            if (i== index) {
-                attroff(A_REVERSE);
-            }
-        }
-        int key = getch();
-        if (key == KEY_DOWN) {
-            index = (index - 1 + options) % options;
-        } else if (key == KEY_UP) {
-            index = (index + 1) % options;
-        } else if (key == '\n') { // Enter key
-            break;
         }
     }
-    endwin(); // End ncurses mode
-    return index;
-} 
-
-
     int main(int argc, char const *argv[]) {
 
-        cout << "Wilkommen zum Ultimativen TEB-Lenzer programm für ET!" << endl;
+        cout << "Wilkommen zum Ultimativen TEB-Lenzer programm für ET!\n" << endl;
+        cout << "Die Aktuelle funktionsliste ist:\n" << endl;
+        cout << "1. Uc, Braucht U, T und Tau,\n" << endl;
+        cout << "2. Ic, Braucht T und Tau,\n" << endl;
+        cout << "3. get_Tau, Braucht R und c\n" << endl;
+        cout << "4. get_Time, Braucht Tau,\n" << endl;
+        cout << "5. get Capacity, braucht A Er und l\n" << endl;
+
+        string option;
         
-        return 0;
+        int cleaned_option = 0;
+
+        while (true) {
+        cout << "Bitte geben Sie eine Zahl ein: ";
+        cin >> option;
+
+        try {
+            cleaned_option = stoi(option);
+            break;
+        } catch (exception &err) {
+            cout << "Das ist keine Nummer, du Hund!" << endl;
+        }
     }
+        
+        // Get the size of the materials array
+        int numMaterials = sizeof(materials) / sizeof(materials[0]);
+
+        // Variable to store all material names
+        string materialNames;
+
+        // Loop through the array and concatenate the names
+        for (int i = 0; i < numMaterials; i++) {
+            materialNames += materials[i].name + "\n";
+        }
+
+        if(cleaned_option)
+
+        switch (cleaned_option)
+        {
+        case 1: // Uc
+            float U = validate_user_retardation("Enter U: ");
+            float T = validate_user_retardation("Enter t: ");
+            float Tau = validate_user_retardation("Enter Tau: ");
+            cout << Uc(U,T,Tau) << endl;
+            break;
+        case 2: // Ic
+            float T = validate_user_retardation("Enter T: ");
+            float Tau = validate_user_retardation("Enter Tau: ");
+            cout << ic(T,Tau) << endl;
+            break;
+        case 3: // get_Tau
+            float R = validate_user_retardation("Enter R: ");
+            float c = validate_user_retardation("Enter c: ");
+            cout << get_Tau(R,c) << endl;
+            break;
+        case 4: // get_Time
+            float Tau = validate_user_retardation("Enter Tau: ");
+            cout << get_Time(Tau) << endl;
+            break;
+        case 5: //get_Capacity
+            float A = validate_user_retardation("Enter A: ");
+            float Er = validate_user_retardation("Enter Er the Material: \n All Materials:\n" + materialNames);
+            float l = validate_user_retardation("Enter l: ");
+            int er = static_cast<int>(Er);
+            cout << get_Capacity(A,materials[er-1].epsilon_r_max,l);
+            break;
+        default:
+            cout << "Schreib ne nummer du Profi!!" << endl;
+            break;
+        }
+
+        return 0;
+}
