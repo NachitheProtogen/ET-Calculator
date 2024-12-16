@@ -66,7 +66,7 @@ using namespace std;
         return calc + logic;
     }
 
-    float validate_user_retardation(string prompt){
+    float validate_user_input(string prompt){
         string input;
         float number;
 
@@ -78,7 +78,7 @@ using namespace std;
                 number = stof(input);
                 return number;        
             } catch (exception &err) {
-                cout << "Das ist keine Nummer, du Hund!" << endl;
+                cout << "Das ist keine Nummer." << endl;
             }
         }
     }
@@ -103,7 +103,7 @@ int main(int argc, char const *argv[]) {
             cleaned_option = stoi(option);
             break;
         } catch (exception &err) {
-            cout << "Das ist keine Nummer, du Hund!" << endl;
+            cout << "Das ist keine Nummer." << endl;
         }
     }
 
@@ -116,44 +116,44 @@ int main(int argc, char const *argv[]) {
 
     switch (cleaned_option) {
         case 1: {
-            float U = validate_user_retardation("Enter U: ");
-            float T = validate_user_retardation("Enter t: ");
-            float Tau = validate_user_retardation("Enter Tau: ");
+            float U = validate_user_input("Gib U an: ");
+            float T = validate_user_input("Gib t an: ");
+            float Tau = validate_user_input("Gib Tau an: ");
             cout << Uc(U, T, Tau) << endl;
             break;
         }
         case 2: {
-            float T = validate_user_retardation("Enter T: ");
-            float Tau = validate_user_retardation("Enter Tau: ");
+            float T = validate_user_input("Gib T an: ");
+            float Tau = validate_user_input("Gib Tau an: ");
             cout << ic(T, Tau) << endl;
             break;
         }
         case 3: {
-            float R = validate_user_retardation("Enter R: ");
-            float c = validate_user_retardation("Enter c: ");
+            float R = validate_user_input("Gib R an: ");
+            float c = validate_user_input("Gib c an: ");
             cout << get_Tau(R, c) << endl;
             break;
         }
         case 4: {
-            float Tau = validate_user_retardation("Enter Tau: ");
+            float Tau = validate_user_input("Gib Tau an: ");
             cout << get_Time(Tau) << endl;
             break;
         }
         case 5: {
-            string materialPrompt = "Enter Er the Material: \nAll Materials:\n" + materialNames;
-            float A = validate_user_retardation("Enter A: ");
-            float Er = validate_user_retardation(materialPrompt);
-            float l = validate_user_retardation("Enter l: ");
+            string materialPrompt = "Gib Er an als Material: \nAlle Materialien:\n" + materialNames;
+            float A = validate_user_input("Gib A an: ");
+            float Er = validate_user_input(materialPrompt);
+            float l = validate_user_input("Gib l an: ");
             int er = static_cast<int>(Er);
             if (er < 1 || er > numMaterials) {
-                cout << "Invalid material selection!" << endl;
+                cout << "Invalide material auswahl!" << endl;
                 break;
             }
             cout << get_Capacity(A, materials[er - 1].epsilon_r_max, l);
             break;
         }
         default:
-            cout << "Schreib ne nummer du Profi!!" << endl;
+            cout << "Du must eine Nummer eingeben." << endl;
             break;
     }
 
